@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".NavigationDrawer" android:theme="@style/ImageHeaderLight" />
+
     </application>
 
 </manifest>

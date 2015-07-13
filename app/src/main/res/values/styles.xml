@@ -1,8 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/app_blue_color</item>
+        <item name="colorPrimaryDark">@color/app_dark_blue_color</item>
     </style>
+
+    <style name="ImageHeaderLight" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
+        <item name="colorPrimary">@color/app_blue_color</item>
+        <item name="colorPrimaryDark">@color/app_dark_blue_color</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="drawerType">@integer/DRAWERTYPE_IMAGE</item>
+    </style>
+
 
 </resources>

@@ -1,25 +1,23 @@
 package com.fwollo;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-public class MainActivity extends ActionBarActivity {
-
-    private Toolbar toolbar;
-
+/**
+ * Created by neokree on 18/01/15.
+ */
+public class NavigationDrawer extends MaterialNavigationDrawer {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public void init(Bundle savedInstanceState) {
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
+        // set the header image
+        this.setDrawerHeaderImage(R.drawable.header);
 
+         this.addSection(newSection("Fwollo", new HomeFragment()));
     }
 
     @Override
