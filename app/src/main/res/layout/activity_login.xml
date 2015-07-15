@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"></include>
+
+    <EditText
+        android:id="@+id/et_country_code"
+        android:text=""
+        android:ems="10"
+        android:focusable="false"
+        android:imeOptions="flagNoExtractUi"
+        android:layout_below="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:textColor="#888"
+        android:textColorHint="#888"
+        android:hint="United States (+1)"
+        android:editable="false"
+        android:backgroundTint="@color/app_blue_color"
+        android:layout_height="@dimen/element_height" />
+
+
+    <EditText android:text=""
+        android:id="@+id/et_phone_number"
+        android:inputType="phone"
+        android:textColor="#888"
+        android:textColorHint="#888"
+        android:layout_below="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="Number without country code"
+        android:backgroundTint="@color/app_blue_color"
+        android:layout_height="@dimen/element_height" />
+
+    <TextView android:text="An access code will be send to you by SMS"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:text="Continue"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/app_blue_color"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/element_height"
+        android:background="@drawable/button_border"/>
+
+</LinearLayout>

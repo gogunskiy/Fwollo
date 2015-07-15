@@ -1,0 +1,12 @@
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_country_item"
+    android:minHeight="@dimen/element_height"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:paddingRight="16dp"
+    android:text="@string/hello_world"
+    android:layout_below="@+id/tool_bar"
+    android:layout_height="wrap_content" />

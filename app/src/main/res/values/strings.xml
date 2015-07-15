@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="app_fwollo_title">fwollo</string>
+    <string name="phone_number_verification_text">Is this your correct number? \n%s\nAn SMS with your access code will be sent to this number</string>
+    <string name="phone_number_verification_header">Phone Number Verification</string>
 </resources>
