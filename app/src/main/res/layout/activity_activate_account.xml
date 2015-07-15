@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".LoginActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"></include>
+
+    <LinearLayout
+        android:focusable="true" android:focusableInTouchMode="true"
+        android:layout_width="0px" android:layout_height="0px"/>
+    
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/to_text_input_layout"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText android:text=""
+            android:id="@+id/et_code"
+            android:inputType="phone"
+            android:textColor="#888"
+            android:textColorHint="#888"
+            android:layout_below="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Access code"
+            android:backgroundTint="@color/app_blue_color"
+            android:layout_height="@dimen/element_height" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView android:text="@string/access_code_note_label"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

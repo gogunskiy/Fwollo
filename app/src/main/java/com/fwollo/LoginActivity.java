@@ -19,7 +19,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
 
-public class LoginActivity extends android.support.v7.app.ActionBarActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText countryCode;
     private EditText phoneNumber;
@@ -27,14 +27,63 @@ public class LoginActivity extends android.support.v7.app.ActionBarActivity {
     private CountryService countryService;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    int layoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    void inflateViews() {
 
         btnLogin = (Button) findViewById(R.id.btn_login);
         countryCode = (EditText) findViewById(R.id.et_country_code);
         phoneNumber = (EditText) findViewById(R.id.et_phone_number);
 
+        countryCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, CountryListActivity.class));
+            }
+        });
+
+        btnLogin.setOnClickListener(onLoginButtonClickListener);
+    }
+
+    @Override
+    void viewsWereInflated() {
+        initiateService();
+        initiateTextWatcher();
+    }
+
+    @Override
+    String title() {
+        return "Phone Login";
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
+    private void initiateService() {
+        countryService = DataManager.defaultManager().getCountryService();
+        countryService.work(new CountryService.ServiceCallBack() {
+            @Override
+            public void onSuccess() {
+                update();
+            }
+        });
+    }
+
+    private void update() {
+        Country selectedCountry = countryService.getSelectedCountry();
+        countryCode.setText(selectedCountry.getName() + " (+" + selectedCountry.getPhoneCode() + ")");
+        phoneNumber.setText("");
+        btnLogin.setVisibility(View.GONE);
+    }
+
+
+    private void initiateTextWatcher() {
         final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
         phoneNumber.addTextChangedListener(new TextWatcher() {
@@ -56,58 +105,30 @@ public class LoginActivity extends android.support.v7.app.ActionBarActivity {
                     if (phoneUtil.isValidNumber(phoneObject)) {
                         btnLogin.setVisibility(View.VISIBLE);
                     } else {
-                       btnLogin.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.GONE);
                     }
 
                 } catch (NumberParseException e) {
                 }
             }
         });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Phone Login");
-
-        countryCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, CountryListActivity.class));
-            }
-        });
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog.showConfirmAlert(LoginActivity.this,
-                        getString(R.string.phone_number_verification_header),
-                        getString(R.string.phone_number_verification_text,  phoneNumber.getText().toString()),
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-            }
-        });
-        countryService = DataManager.defaultManager().getCountryService();
-        countryService.work(new CountryService.ServiceCallBack() {
-            @Override
-            public void onSuccess() {
-                update();
-            }
-        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        update();
-    }
 
-    private void update() {
-        Country selectedCountry = countryService.getSelectedCountry();
-        countryCode.setHint(selectedCountry.getName() + " (+" + selectedCountry.getPhoneCode() + ")");
-        phoneNumber.setText("");
-    }
+    View.OnClickListener onLoginButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Dialog.showConfirmAlert(LoginActivity.this,
+                    getString(R.string.phone_number_verification_header),
+                    getString(R.string.phone_number_verification_text, phoneNumber.getText().toString()),
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(LoginActivity.this, ActivateAccountActivity.class));
+                            finish();
+                        }
+                    });
+        }
+    };
 }

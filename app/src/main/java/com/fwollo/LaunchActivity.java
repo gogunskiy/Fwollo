@@ -7,19 +7,37 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+    int layoutId() {
+        return R.layout.activity_launch;
+    }
 
+    @Override
+    void inflateViews() {
         Button loginButton = (Button) findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
+                finish();
             }
         });
+    }
+
+    @Override
+    void viewsWereInflated() {
+
+    }
+
+    @Override
+    String title() {
+        return "";
+    }
+
+    @Override
+    protected void initiateToolBar() {
+
     }
 }

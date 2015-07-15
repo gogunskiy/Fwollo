@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fwollo" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name="com.fwollo.application.Application"
         android:allowBackup="true"
@@ -17,9 +20,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NavigationDrawer" android:theme="@style/ImageHeaderLight" />
+        <activity android:name=".NavigationDrawerActivity" android:theme="@style/ImageHeaderLight" />
         <activity android:name=".LoginActivity" android:label="Phone Login"/>
         <activity android:name=".CountryListActivity" android:label="Choose country"/>
+        <activity android:name=".ActivateAccountActivity" android:label="Phone Login"/>
+        <activity android:name=".UserProfileActivity" android:label="Profile"/>
 
     </application>
 

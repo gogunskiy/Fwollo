@@ -23,29 +23,37 @@ import com.fwollo.logic.services.CountryService;
 import java.util.List;
 
 
-public class CountryListActivity extends ActionBarActivity {
+public class CountryListActivity extends BaseActivity {
 
     private CountryService service;
+    private  RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_country_list);
+    int layoutId() {
+        return R.layout.activity_country_list;
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Choose country");
-
-        service = DataManager.defaultManager().getCountryService();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    @Override
+    void inflateViews() {
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    void viewsWereInflated() {
+        service = DataManager.defaultManager().getCountryService();
 
         if (service != null) {
             recyclerView.setAdapter(new CountryAdapter(service.getCountries(), onClickListener));
         }
+    }
+
+    @Override
+    String title() {
+        return "Choose country";
     }
 
     OnItemClickListener onClickListener = new OnItemClickListener() {

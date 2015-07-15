@@ -6,4 +6,5 @@
     <string name="app_fwollo_title">fwollo</string>
     <string name="phone_number_verification_text">Is this your correct number? \n%s\nAn SMS with your access code will be sent to this number</string>
     <string name="phone_number_verification_header">Phone Number Verification</string>
+    <string name="access_code_note_label">If you do not receive your access code within 60 seconds press CODE</string>
 </resources>

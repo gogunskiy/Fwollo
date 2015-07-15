@@ -19,6 +19,7 @@
     
     <Button
         android:id="@+id/btn_login"
+        android:textAllCaps="false"
         android:text="Login with Phone Number"
         android:textSize="20dp"
         android:textColor="@android:color/white"
@@ -34,6 +35,7 @@
         android:id="@+id/btn_facebook_login"
         android:text="Login with Facebook"
         android:textSize="20dp"
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"

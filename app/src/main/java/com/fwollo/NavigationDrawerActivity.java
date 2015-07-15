@@ -10,7 +10,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 /**
  * Created by neokree on 18/01/15.
  */
-public class NavigationDrawer extends MaterialNavigationDrawer {
+public class NavigationDrawerActivity extends MaterialNavigationDrawer {
     @Override
     public void init(Bundle savedInstanceState) {
 
@@ -36,7 +36,7 @@ public class NavigationDrawer extends MaterialNavigationDrawer {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, NavigationDrawer.class);
+            Intent intent = new Intent(this, NavigationDrawerActivity.class);
             startActivity(intent);
             return true;
         }
