@@ -1,24 +1,15 @@
-package com.fwollo;
+package com.fwollo.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fwollo.logic.datamanager.DataManager;
-import com.fwollo.logic.models.Country;
-import com.fwollo.logic.services.CountryService;
+import com.fwollo.R;
 import com.fwollo.utils.Dialog;
 import com.fwollo.utils.TextUtils;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 
 
 public class ActivateAccountActivity extends BaseActivity {

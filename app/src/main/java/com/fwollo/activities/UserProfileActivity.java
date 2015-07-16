@@ -1,4 +1,4 @@
-package com.fwollo;
+package com.fwollo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
+import com.fwollo.R;
 import com.fwollo.utils.MediaActions;
 import com.fwollo.utils.MediaUtils;
 import com.github.siyamed.shapeimageview.CircularImageView;

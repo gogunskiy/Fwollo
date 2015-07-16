@@ -1,4 +1,4 @@
-package com.fwollo;
+package com.fwollo.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

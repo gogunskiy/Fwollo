@@ -1,4 +1,4 @@
-package com.fwollo;
+package com.fwollo.activities;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fwollo.R;
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Country;
 import com.fwollo.logic.services.CountryService;
+import com.fwollo.widgets.fastScroller.BubbleTextGetter;
+import com.fwollo.widgets.fastScroller.FastScroller;
 
 import java.util.List;
 
@@ -37,9 +40,12 @@ public class CountryListActivity extends BaseActivity {
     void inflateViews() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FastScroller fastScroller=(FastScroller)findViewById(R.id.fastscroller);
+        fastScroller.setRecyclerView(recyclerView);
     }
 
     @Override
@@ -64,7 +70,7 @@ public class CountryListActivity extends BaseActivity {
         }
     };
 
-    private class CountryAdapter extends RecyclerView.Adapter <CountryAdapter.ViewHolder> {
+    private class CountryAdapter extends RecyclerView.Adapter <CountryAdapter.ViewHolder> implements BubbleTextGetter {
         private List <Country> items;
         private OnItemClickListener onClickListener;
 
@@ -91,6 +97,11 @@ public class CountryListActivity extends BaseActivity {
         @Override
         public int getItemCount() {
             return items.size();
+        }
+
+        @Override
+        public String getTextToShowInBubble(int pos) {
+            return Character.toString(items.get(pos).getName().charAt(0));
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

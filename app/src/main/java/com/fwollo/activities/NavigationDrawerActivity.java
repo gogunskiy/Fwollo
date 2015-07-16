@@ -1,13 +1,11 @@
-package com.fwollo;
+package com.fwollo.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fwollo.utils.Dialog;
+import com.fwollo.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
