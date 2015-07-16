@@ -9,11 +9,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Country;
 import com.fwollo.logic.services.CountryService;
 import com.fwollo.utils.Dialog;
+import com.fwollo.utils.TextUtils;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -22,6 +24,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 public class ActivateAccountActivity extends BaseActivity {
 
     private EditText tvCode;
+    private TextView tvDeclimer;
 
     @Override
     int layoutId() {
@@ -31,7 +34,14 @@ public class ActivateAccountActivity extends BaseActivity {
     @Override
     void inflateViews() {
         tvCode = (EditText) findViewById(R.id.et_code);
+        tvDeclimer = (TextView) findViewById(R.id.tv_declimer);
 
+        TextUtils.setHighlightedText(tvDeclimer, getResources().getString(R.string.access_code_note_label), "CODE", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog.showAlert(ActivateAccountActivity.this, "Code", "Code was resent");
+            }
+        });
     }
 
     @Override

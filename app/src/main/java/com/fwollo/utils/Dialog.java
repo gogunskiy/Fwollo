@@ -1,8 +1,8 @@
 package com.fwollo.utils;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 
 public class Dialog {
 

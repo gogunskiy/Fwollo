@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -84,43 +85,42 @@ public class LoginActivity extends BaseActivity {
 
 
     private void initiateTextWatcher() {
-        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-
-        phoneNumber.addTextChangedListener(new TextWatcher() {
+        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    final String defaultRegion = countryService.getSelectedCountry().getCode().toUpperCase();
-                    Phonenumber.PhoneNumber phoneObject = phoneUtil.parse(editable.toString(), defaultRegion);
-                    if (phoneUtil.isValidNumber(phoneObject)) {
-                        btnLogin.setVisibility(View.VISIBLE);
-                    } else {
-                        btnLogin.setVisibility(View.GONE);
-                    }
-
-                } catch (NumberParseException e) {
-                }
+            public synchronized void afterTextChanged(Editable s) {
+                super.afterTextChanged(s);
+                checkLoginButtonVisibility();
             }
         });
     }
 
+    private void checkLoginButtonVisibility() {
+        Phonenumber.PhoneNumber phoneObject = getPhoneNumberObject();
+        if (phoneObject != null && PhoneNumberUtil.getInstance().isValidNumber(phoneObject)) {
+            btnLogin.setVisibility(View.VISIBLE);
+        } else {
+            btnLogin.setVisibility(View.GONE);
+        }
+    }
+
+    private Phonenumber.PhoneNumber getPhoneNumberObject() {
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String defaultRegion = countryService.getSelectedCountry().getCode().toUpperCase();
+        Phonenumber.PhoneNumber phoneObject = null;
+        try {
+            phoneObject = phoneUtil.parse(phoneNumber.getText().toString(), defaultRegion);
+        } catch (NumberParseException e) {
+
+        }
+        return phoneObject;
+    }
 
     View.OnClickListener onLoginButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Dialog.showConfirmAlert(LoginActivity.this,
                     getString(R.string.phone_number_verification_header),
-                    getString(R.string.phone_number_verification_text, phoneNumber.getText().toString()),
+                    getString(R.string.phone_number_verification_text, getFormattedPhoneNumber()),
                     "OK",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -131,4 +131,9 @@ public class LoginActivity extends BaseActivity {
                     });
         }
     };
+
+    private String getFormattedPhoneNumber() {
+        final String code = countryService.getSelectedCountry().getPhoneCode();
+        return "+" + code + " "+ phoneNumber.getText().toString();
+    }
 }

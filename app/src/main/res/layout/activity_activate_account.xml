@@ -36,7 +36,9 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <TextView android:text="@string/access_code_note_label"
+    <TextView
+        android:id="@+id/tv_declimer"
+        android:text="@string/access_code_note_label"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
