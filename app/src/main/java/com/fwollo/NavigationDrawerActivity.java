@@ -1,11 +1,17 @@
 package com.fwollo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fwollo.utils.Dialog;
+
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 /**
  * Created by neokree on 18/01/15.
@@ -18,6 +24,15 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer {
         this.setDrawerHeaderImage(R.drawable.header);
 
          this.addSection(newSection("Fwollo", new HomeFragment()));
+
+        this.addBottomSection(newSection("Sign out", new MaterialSectionListener() {
+            @Override
+            public void onClick(MaterialSection materialSection) {
+                startActivity(new Intent(NavigationDrawerActivity.this, LaunchActivity.class));
+                finish();
+            }
+        }));
+
     }
 
     @Override

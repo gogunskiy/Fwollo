@@ -109,7 +109,10 @@
 
 
             <LinearLayout
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/element_height"
@@ -117,7 +120,8 @@
 
                 <View
                     android:background="@android:color/black"
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.4"
                     android:layout_height="1dp" />
 
                 <TextView android:text="or"
@@ -131,7 +135,8 @@
 
                 <View
                     android:background="@android:color/black"
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.4"
                     android:layout_height="1dp" />
 
             </LinearLayout>
@@ -140,6 +145,7 @@
                 android:id="@+id/btn_facebook_login"
                 android:text="use facebook details"
                 android:textSize="20dp"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
