@@ -2,9 +2,11 @@ package com.fwollo.logic.models;
 
 public class Country {
 private  String code;
-    private  String phoneCode;
-    private  String name;
-    private  String isDefault;
+
+    private String id;
+    private String phoneCode;
+    private String name;
+    private String isDefault;
 
     public boolean isDefault() {
         return "yes".equalsIgnoreCase(isDefault);
