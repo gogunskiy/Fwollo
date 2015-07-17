@@ -2,7 +2,6 @@ package com.fwollo.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Country;
 import com.fwollo.logic.services.CountryService;
 import com.fwollo.utils.Dialog;
+import com.fwollo.utils.PhoneNumberFormattingTextWatcher;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity {
 
     private void initiateService() {
         countryService = DataManager.defaultManager().getCountryService();
-        countryService.work(new CountryService.ServiceCallBack() {
+        countryService.update(new CountryService.ServiceCallBack() {
             @Override
             public void onSuccess() {
                 update();
@@ -103,10 +103,9 @@ public class LoginActivity extends BaseActivity {
 
     private Phonenumber.PhoneNumber getPhoneNumberObject() {
         final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        final String defaultRegion = countryService.getSelectedCountry().getCode().toUpperCase();
         Phonenumber.PhoneNumber phoneObject = null;
         try {
-            phoneObject = phoneUtil.parse(phoneNumber.getText().toString(), defaultRegion);
+            phoneObject = phoneUtil.parse(phoneNumber.getText().toString(), getCountryCode());
         } catch (NumberParseException e) {
 
         }
@@ -133,5 +132,9 @@ public class LoginActivity extends BaseActivity {
     private String getFormattedPhoneNumber() {
         final String code = countryService.getSelectedCountry().getPhoneCode();
         return "+" + code + " "+ phoneNumber.getText().toString();
+    }
+
+    private String getCountryCode() {
+        return  countryService.getSelectedCountry().getCode().toUpperCase();
     }
 }

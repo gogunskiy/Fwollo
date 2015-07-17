@@ -17,7 +17,7 @@ public class TagService extends BaseService {
     }
 
 
-    public void work(ServiceCallBack callBack) {
+    public void update(ServiceCallBack callBack) {
         try {
             tags = JSONUtils.getJSONObjectArray(context, "countries", "country_codes.json", Country.class);
             isReady = true;

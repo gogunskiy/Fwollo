@@ -24,7 +24,7 @@ public class BaseService {
 
     }
 
-    public void work(ServiceCallBack callBack) {
+    public void update(ServiceCallBack callBack) {
         isReady = true;
     }
 

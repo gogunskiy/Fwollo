@@ -18,6 +18,7 @@ public class MediaActions {
         switch (action) {
             case ACTION_IMAGE_CAPTURE: {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                takePicture.putExtra("android.intent.extras.CAMERA_FACING", 1);
                 activity.startActivityForResult(takePicture, action);
             }
             break;

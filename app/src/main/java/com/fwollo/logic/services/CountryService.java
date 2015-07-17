@@ -1,6 +1,7 @@
 package com.fwollo.logic.services;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.fwollo.logic.models.Country;
 import com.fwollo.utils.JSONUtils;
@@ -21,7 +22,7 @@ public class CountryService extends BaseService {
     }
 
 
-    public void work(ServiceCallBack callBack) {
+    public void update(ServiceCallBack callBack) {
         try {
             countries = JSONUtils.getJSONObjectArray(context, "countries", "country_codes.json", Country.class);
             selectedCountry = getDefaultCountry();
@@ -31,6 +32,28 @@ public class CountryService extends BaseService {
             e.printStackTrace();
         }
     }
+
+    private Country getDefaultCountry() {
+        String deviceCountryCode = getDeviceCountryCode();
+        for (Country country : countries) {
+            if (country.getCode().equalsIgnoreCase(deviceCountryCode)) {
+                return country;
+            }
+        }
+
+        return getCountryMarkedAsDefault();
+    }
+
+    private Country getCountryMarkedAsDefault() {
+        for (Country country : countries) {
+            if (country.isDefault()) {
+                return country;
+            }
+        }
+
+        return null;
+    }
+
 
     public void reset() {
         isReady = false;
@@ -50,13 +73,9 @@ public class CountryService extends BaseService {
         this.selectedCountry = selectedCountry;
     }
 
-    private Country getDefaultCountry() {
-        for (Country country : countries) {
-            if (country.isDefault()) {
-                return country;
-            }
-        }
 
-        return null;
+    private String getDeviceCountryCode() {
+        TelephonyManager tm = (TelephonyManager)context.getSystemService(context.TELEPHONY_SERVICE);
+        return  tm.getNetworkCountryIso();
     }
 }

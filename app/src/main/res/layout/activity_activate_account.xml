@@ -21,7 +21,7 @@
 
         <EditText android:text=""
             android:id="@+id/et_code"
-            android:inputType="phone"
+            android:inputType="numberDecimal"
             android:textColor="#888"
             android:textColorHint="#888"
             android:layout_below="@+id/tool_bar"

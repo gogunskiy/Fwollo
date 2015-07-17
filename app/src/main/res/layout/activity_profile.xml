@@ -66,9 +66,13 @@
                 <EditText
                     android:id="@+id/et_name"
                     android:text=""
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:textColor="#888"
                     android:textColorHint="#888"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:capitalize="words"
                     android:hint="Enter your name"
                     android:backgroundTint="@color/app_blue_color"
                     android:layout_height="@dimen/element_height" />
@@ -88,6 +92,8 @@
                     android:layout_below="@+id/tool_bar"
                     android:layout_width="match_parent"
                     android:hint="Add your email"
+                    android:maxLines="1"
+                    android:inputType="textEmailAddress"
                     android:backgroundTint="@color/app_blue_color"
                     android:layout_height="@dimen/element_height" />
 
