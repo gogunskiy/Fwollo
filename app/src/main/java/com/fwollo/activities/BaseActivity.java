@@ -5,6 +5,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.fwollo.R;
+import com.fwollo.logic.services.BaseService;
+import com.fwollo.logic.services.ExecutionService;
+import com.fwollo.logic.services.ServiceListener;
+import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.SpiceService;
 
 
 public abstract class BaseActivity extends ActionBarActivity {

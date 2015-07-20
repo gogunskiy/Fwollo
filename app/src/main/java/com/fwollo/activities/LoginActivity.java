@@ -10,7 +10,8 @@ import android.widget.EditText;
 import com.fwollo.R;
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Country;
-import com.fwollo.logic.services.CountryService;
+import com.fwollo.logic.services.CountryService.CountryList;
+import com.fwollo.logic.services.CountryService.GetCountryService;
 import com.fwollo.utils.Dialog;
 import com.fwollo.utils.PhoneNumberFormattingTextWatcher;
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -23,7 +24,15 @@ public class LoginActivity extends BaseActivity {
     private EditText countryCode;
     private EditText phoneNumber;
     private Button btnLogin;
-    private CountryService countryService;
+    private CountryList countryList;
+
+    public CountryList getCountryList() {
+        return countryList;
+    }
+
+    public void setCountryList(CountryList countryList) {
+        this.countryList = countryList;
+    }
 
     @Override
     int layoutId() {
@@ -61,24 +70,34 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        CountryList countryList = DataManager.defaultManager().getCountryList();
+        if (countryList != null) {
+            setCountryList(countryList);
+        }
+
         update();
     }
 
     private void initiateService() {
-        countryService = DataManager.defaultManager().getCountryService();
-        countryService.update(new CountryService.ServiceCallBack() {
+        DataManager.defaultManager().runTaskInBackground(new GetCountryService(this), new GetCountryService.GetCountryTaskListener() {
             @Override
-            public void onSuccess() {
+            public void onRequestSuccess(CountryList countryList) {
+                DataManager.defaultManager().setCountryList(countryList);
                 update();
             }
         });
     }
 
     private void update() {
-        Country selectedCountry = countryService.getSelectedCountry();
-        countryCode.setText(selectedCountry.getName() + " (+" + selectedCountry.getPhoneCode() + ")");
-        phoneNumber.setText("");
-        btnLogin.setVisibility(View.GONE);
+        if (countryList != null) {
+            Country selectedCountry = countryList.getSelectedCountry();
+            if (selectedCountry != null) {
+                countryCode.setText(selectedCountry.getName() + " (+" + selectedCountry.getPhoneCode() + ")");
+                phoneNumber.setText("");
+                btnLogin.setVisibility(View.GONE);
+            }
+        }
     }
 
 
@@ -130,11 +149,15 @@ public class LoginActivity extends BaseActivity {
     };
 
     private String getFormattedPhoneNumber() {
-        final String code = countryService.getSelectedCountry().getPhoneCode();
+        final String code = countryList.getSelectedCountry().getPhoneCode();
         return "+" + code + " "+ phoneNumber.getText().toString();
     }
 
     private String getCountryCode() {
-        return  countryService.getSelectedCountry().getCode().toUpperCase();
+        if (countryList != null) {
+            return countryList.getSelectedCountry().getCode().toUpperCase();
+        }
+
+        return "";
     }
 }

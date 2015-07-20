@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +16,7 @@ import android.widget.TextView;
 import com.fwollo.R;
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Country;
-import com.fwollo.logic.services.CountryService;
+import com.fwollo.logic.services.CountryService.CountryList;
 import com.fwollo.widgets.fastScroller.BubbleTextGetter;
 import com.fwollo.widgets.fastScroller.FastScroller;
 
@@ -28,7 +25,7 @@ import java.util.List;
 
 public class CountryListActivity extends BaseActivity {
 
-    private CountryService service;
+    private CountryList countryList;
     private  RecyclerView recyclerView;
 
     @Override
@@ -50,10 +47,10 @@ public class CountryListActivity extends BaseActivity {
 
     @Override
     void viewsWereInflated() {
-        service = DataManager.defaultManager().getCountryService();
+        countryList = DataManager.defaultManager().getCountryList();
 
-        if (service != null) {
-            recyclerView.setAdapter(new CountryAdapter(service.getCountries(), onClickListener));
+        if (countryList != null) {
+            recyclerView.setAdapter(new CountryAdapter(countryList.getCountries(), onClickListener));
         }
     }
 
@@ -65,7 +62,7 @@ public class CountryListActivity extends BaseActivity {
     OnItemClickListener onClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(Country country) {
-            service.setSelectedCountry(country);
+            countryList.setSelectedCountry(country);
             finish();
         }
     };

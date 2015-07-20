@@ -29,10 +29,10 @@ public class JSONUtils {
         return jsonRepresentation;
     }
 
-    static public <T> List<T> getJSONObjectArray(Context context, String key, String asset,  Class<T> classOfT) throws JSONException {
+    static public <T> ArrayList <T> getJSONObjectArray(Context context, String key, String asset,  Class<T> classOfT) throws JSONException {
         String jsonString = FileUtils.getStringFromAsset(asset, context);
         JSONArray jsonArray = new JSONObject(jsonString).getJSONArray(key);
-        List<T> array = new ArrayList<>(jsonArray.length());
+        ArrayList<T> array = new ArrayList<>(jsonArray.length());
         for(int i=0; i < jsonArray.length(); i++) {
             array.add(getObjectFromString(jsonArray.getString(i), classOfT));
         }

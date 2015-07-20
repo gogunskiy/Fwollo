@@ -2,38 +2,96 @@ package com.fwollo.logic.services;
 
 import android.content.Context;
 
-import com.fwollo.logic.models.Country;
-import com.fwollo.utils.JSONUtils;
+import com.fwollo.logic.apiclient.ApiClient;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.request.SpiceRequest;
 
-import org.json.JSONException;
+/**
+ * Parent task to be executed in background. Results can be cached
+ * 
+ * @param <Result> task result type
+ */
+public abstract class BaseService<Result, T> extends SpiceRequest<Result> {
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+    private String cacheKey;
+    private long expires = DurationInMillis.ALWAYS_EXPIRED;
 
-public class BaseService {
-
+    protected ApiClient apiClient;
     protected Context context;
-    protected boolean isReady;
 
-    public void setContext(Context context) {
-        this.context = context;
+
+    public BaseService(Class<? super Result> clazz) {
+        super((Class<Result>) clazz);
     }
 
-    public BaseService() {
-
+    /**
+     * Enable caching for this task instance results.
+     *
+     * @param expiresMillis caching expiry in millis. If not expired result will
+     *            be found in cache it will be used as result
+     * @param cacheKeys     values that uniquely determine this task instance
+     */
+    public void enableCaching(long expiresMillis, Object... cacheKeys) {
+        expires = expiresMillis;
+        cacheKey = createCacheKey(cacheKeys);
     }
 
-    public void update(ServiceCallBack callBack) {
-        isReady = true;
+    /**
+     * Disable caching for this task
+     */
+    public void disableCaching() {
+        this.cacheKey = null;
     }
 
-    public void reset() {
-        isReady = false;
+    /**
+     * Check if this task implementation supports caching
+     *
+     * @return true if result can be cached
+     */
+    public boolean isCacheEnabled() {
+        return cacheKey != null;
     }
 
-    public interface ServiceCallBack {
-        void onSuccess();
+    /**
+     * Return expiry timeout for previous task results.
+     * If not expired result will be found
+     * in cache it will be used as result
+     */
+    public long getExpiresInMillis() {
+        return expires;
+    }
+
+    /**
+     * Used inside RoboSpice to unique identify task
+     * Can be null if cache is disabled
+     *
+     * @return cache key
+     */
+    public Object getCacheKey() {
+        return cacheKey;
+    }
+
+
+    /**
+     * Executed in background thread
+     *
+     * @return result
+     */
+    protected abstract Result doInBackground() throws Exception;
+
+    @Override
+    public final Result loadDataFromNetwork() throws Exception {
+        return doInBackground();
+    }
+
+    private String createCacheKey(Object[] cacheKeys) {
+        StringBuilder sb = new StringBuilder(getClass().getName());
+        for (Object key : cacheKeys) {
+            if(key != null) {
+                sb.append(key.toString());
+            }
+        }
+        return sb.toString();
     }
 
 }

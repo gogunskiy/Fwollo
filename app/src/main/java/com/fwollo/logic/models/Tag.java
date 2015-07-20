@@ -8,7 +8,7 @@ public class Tag {
     private String name;
     private User author;
     private List <User> followers;
-    private List <TagContent> contentList;
+    private List <TagContent> contents;
 
     public String getId() {
         return id;
@@ -42,12 +42,12 @@ public class Tag {
         this.followers = followers;
     }
 
-    public List<TagContent> getContentList() {
-        return contentList;
+    public List<TagContent> getContents() {
+        return contents;
     }
 
-    public void setContentList(List<TagContent> contentList) {
-        this.contentList = contentList;
+    public void setContents(List<TagContent> contents) {
+        this.contents = contents;
     }
 
     public boolean isOwner(User user) {

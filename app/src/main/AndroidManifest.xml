@@ -26,6 +26,10 @@
         <activity android:name=".activities.ActivateAccountActivity" android:label="Phone Login"/>
         <activity android:name=".activities.UserProfileActivity" android:label="Profile"/>
 
+        <service android:name=".logic.services.ExecutionService" android:exported="false" />
+
     </application>
+
+
 
 </manifest>

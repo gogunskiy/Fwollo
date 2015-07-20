@@ -1,31 +1,29 @@
 package com.fwollo.logic.services;
 
-import android.content.Context;
-
-import com.fwollo.logic.models.Country;
 import com.fwollo.logic.models.User;
-import com.fwollo.utils.JSONUtils;
 
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class UserService extends BaseService {
-
-    private User currentUser;
+public class UserService extends BaseService <User, UserService.GetUserTaskListener> {
 
     public UserService() {
-        super();
+        super(User.class);
+    }
+
+    @Override
+    protected User doInBackground() throws Exception {
+
+        User currentUser;
 
         currentUser = new User();
         currentUser.setId("1");
         currentUser.setFirstName("John");
         currentUser.setLastName("Smith");
         currentUser.setNickName("napoleon");
+
+        return currentUser;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+
+    public static abstract class GetUserTaskListener extends ServiceListener<User> {
+
     }
 }
