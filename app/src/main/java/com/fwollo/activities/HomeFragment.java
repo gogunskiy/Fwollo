@@ -14,15 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fwollo.R;
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Tag;
+import com.fwollo.logic.models.User;
 import com.fwollo.logic.services.TagService.TagList;
 import com.fwollo.logic.services.TagService.TagService;
 import com.fwollo.widgets.fastScroller.BubbleTextGetter;
 import com.fwollo.widgets.fastScroller.FastScroller;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
@@ -36,12 +40,9 @@ public class HomeFragment extends Fragment {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        FastScroller fastScroller=(FastScroller) rootView.findViewById(R.id.fastscroller);
-        fastScroller.setRecyclerView(recyclerView);
 
         update();
 
@@ -79,7 +80,7 @@ public class HomeFragment extends Fragment {
         @Override
         public TagAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
-            TextView v = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.view_tag_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_tag_item, parent, false);
             ViewHolder vh = new ViewHolder(v, onClickListener);
             return vh;
         }
@@ -105,6 +106,7 @@ public class HomeFragment extends Fragment {
             public View rootView;
             public TextView tvTitle;
             public TextView tvSubtitle;
+            public ImageButton btnMore;
 
 
             public Tag item;
@@ -118,7 +120,9 @@ public class HomeFragment extends Fragment {
 
                 this.tvTitle = (TextView) v.findViewById(R.id.tv_item_title);
                 this.tvSubtitle = (TextView) v.findViewById(R.id.tv_item_subtitle);
+                this.btnMore = (ImageButton) v.findViewById(R.id.btn_more);
 
+                btnMore.setColorFilter(getResources().getColor(R.color.app_blue_color));
             }
 
             @Override
@@ -127,55 +131,27 @@ public class HomeFragment extends Fragment {
             }
 
             public void update() {
+
+                User currentUser = DataManager.defaultManager().getCurrentUser();
+                User author = item.getAuthor();
+
+                if (author.getId().equalsIgnoreCase(currentUser.getId())) {
+                    int size = item.getFollowers().size();
+                    String end = size == 1 ? "" : "s";
+                    tvSubtitle.setText(size + " follower" + end);
+                    tvTitle.setTextColor(getResources().getColor(R.color.app_blue_color));
+                } else {
+                    tvSubtitle.setText(author.getFirstName() + " " + author.getLastName());
+                    tvTitle.setTextColor(getResources().getColor(R.color.app_red_color));
+
+                }
                 tvTitle.setText(item.getName());
-                tvSubtitle.setText(item.getAuthor().getNickName());
+
             }
         }
     }
 
     private interface OnItemClickListener {
         void onItemClick(Tag tag);
-    }
-
-    public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-
-        private final int[] ATTRS = new int[]{android.R.attr.listDivider};
-
-        private Drawable mDivider;
-
-        /**
-         * Default divider will be used
-         */
-        public DividerItemDecoration(Context context) {
-            final TypedArray styledAttributes = context.obtainStyledAttributes(ATTRS);
-            mDivider = styledAttributes.getDrawable(0);
-            styledAttributes.recycle();
-        }
-
-        /**
-         * Custom divider will be used
-         */
-        public DividerItemDecoration(Context context, int resId) {
-            mDivider = ContextCompat.getDrawable(context, resId);
-        }
-
-        @Override
-        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            int left = parent.getPaddingLeft();
-            int right = parent.getWidth() - parent.getPaddingRight();
-
-            int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
-
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-                int top = child.getBottom() + params.bottomMargin;
-                int bottom = top + mDivider.getIntrinsicHeight();
-
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
-            }
-        }
     }
 }

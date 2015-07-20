@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fwollo.R;
+import com.fwollo.logic.datamanager.DataManager;
+import com.fwollo.logic.models.User;
+import com.fwollo.logic.services.UserService;
 import com.fwollo.utils.Dialog;
 import com.fwollo.utils.TextUtils;
 
@@ -62,8 +65,16 @@ public class ActivateAccountActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
 
                 if (editable.length() > 3) {
-                    startActivity(new Intent(ActivateAccountActivity.this, UserProfileActivity.class));
-                    finish();
+
+                    DataManager.defaultManager().runTaskInBackground(new UserService(), new UserService.GetUserTaskListener() {
+                        @Override
+                        public void onRequestSuccess(User o) {
+                            DataManager.defaultManager().setCurrentUser(o);
+                            startActivity(new Intent(ActivateAccountActivity.this, UserProfileActivity.class));
+                            finish();
+                        }
+                    });
+
                 }
             }
         });

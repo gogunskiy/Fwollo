@@ -3,6 +3,7 @@ package com.fwollo.logic.datamanager;
 import android.content.Context;
 
 import com.fwollo.logic.apiclient.ApiClient;
+import com.fwollo.logic.models.User;
 import com.fwollo.logic.services.BaseService;
 import com.fwollo.logic.services.CountryService.CountryList;
 import com.fwollo.logic.services.ServiceListener;
@@ -12,6 +13,7 @@ public class DataManager {
 
     private SpiceManager spiceManager = null;
 
+    private User currentUser = null;
     private CountryList countryList = null;
 
 
@@ -24,6 +26,14 @@ public class DataManager {
             shared = new DataManager();
         }
         return shared;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public void setSpiceManager(SpiceManager spiceManager) {
