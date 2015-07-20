@@ -4,12 +4,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DDD"
-    android:orientation="vertical"
-    tools:context=".LoginActivity">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/tv_all_tags"
+            android:layout_weight="1"
+            android:text="All tags"
+            android:gravity="center"
+            android:textColor="@color/app_text_gray_color"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_gravity="center_vertical"
+            android:layout_width="1px"
+            android:background="@color/app_text_gray_color"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_my_tags"
+            android:layout_weight="1"
+            android:text="My tags"
+            android:gravity="center"
+            android:textColor="@color/app_text_gray_color"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <View
+            android:layout_gravity="center_vertical"
+            android:layout_width="1px"
+            android:background="@color/app_text_gray_color"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_following"
+            android:layout_weight="1"
+            android:text="Following"
+            android:gravity="center"
+            android:textColor="@color/app_text_gray_color"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_below="@+id/pager"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:background="@color/app_text_gray_color"
+        android:layout_height="1px"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_below="@+id/tool_bar"
+        android:layout_below="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

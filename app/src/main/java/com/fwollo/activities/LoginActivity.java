@@ -84,6 +84,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onRequestSuccess(CountryList countryList) {
                 DataManager.defaultManager().setCountryList(countryList);
+                setCountryList(countryList);
                 update();
             }
         });

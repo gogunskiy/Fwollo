@@ -20,7 +20,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer {
 
         // set the header image
         this.setDrawerHeaderImage(R.drawable.header);
-
+        this.disableLearningPattern();
          this.addSection(newSection("Fwollo", new HomeFragment()));
 
         this.addBottomSection(newSection("Sign out", new MaterialSectionListener() {

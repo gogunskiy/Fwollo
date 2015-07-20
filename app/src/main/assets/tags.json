@@ -30,7 +30,7 @@
     },
     {
       "id": "1",
-      "name": "Test Tag Name 1",
+      "name": "Some test tag",
       "author": {
         "id": "1",
         "nickName": "vGogunsky",
@@ -58,7 +58,7 @@
     },
     {
       "id": "1",
-      "name": "Test Tag Name 1",
+      "name": "Another test tag",
       "author": {
         "id": "1",
         "nickName": "vGogunsky",
@@ -86,7 +86,7 @@
     },
     {
       "id": "1",
-      "name": "Test Tag Name 1",
+      "name": "Test test test",
       "author": {
         "id": "1",
         "nickName": "vGogunsky",
@@ -114,7 +114,7 @@
     },
     {
       "id": "1",
-      "name": "Test Tag Name 1",
+      "name": "Test Tag again",
       "author": {
         "id": "1",
         "nickName": "vGogunsky",
@@ -170,7 +170,7 @@
     },
     {
       "id": "1",
-      "name": "Test Tag Name 1",
+      "name": "Test 34",
       "author": {
         "id": "3",
         "nickName": "vGogunsky",

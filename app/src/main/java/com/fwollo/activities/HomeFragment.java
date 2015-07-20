@@ -3,17 +3,22 @@ package com.fwollo.activities;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,14 +29,25 @@ import com.fwollo.logic.models.Tag;
 import com.fwollo.logic.models.User;
 import com.fwollo.logic.services.TagService.TagList;
 import com.fwollo.logic.services.TagService.TagService;
+import com.fwollo.widgets.NonSwipeableViewPager;
 import com.fwollo.widgets.fastScroller.BubbleTextGetter;
 import com.fwollo.widgets.fastScroller.FastScroller;
 import com.melnykov.fab.FloatingActionButton;
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
     private RecyclerView recyclerView;
+    private ArrayList <TextView> tabs = new ArrayList<>();
+    private TagAdapter adapter;
+
+    private TagList tagList;
+    private int selectedTabIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,13 +57,35 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new AnimatedGridLayoutManager(getActivity()));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new TagAdapter(onClickListener);
+        adapter.setHasStableIds(true);
+        recyclerView.setAdapter(adapter);
+
+        tabs.add((TextView) rootView.findViewById(R.id.tv_all_tags));
+        tabs.add((TextView) rootView.findViewById(R.id.tv_my_tags));
+        tabs.add((TextView) rootView.findViewById(R.id.tv_following));
+
+        for (TextView tv : tabs) {
+            tv.setOnClickListener(onTagClickListener);
+        }
 
         update();
 
         return rootView;
     }
+
+    private void setSelectedTab(int tabIndex) {
+        for (TextView tv : tabs) {
+            tv.setTextColor(getResources().getColor(R.color.app_text_gray_color));
+        }
+
+        tabs.get(tabIndex).setTextColor(getResources().getColor(R.color.app_text_dark_gray_color));
+        selectedTabIndex = tabIndex;
+        onUpdateListener.update();
+    }
+
 
     private void update() {
         TagService task = new TagService(DataManager.defaultManager().getApiClient(), "2344");
@@ -55,11 +93,27 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRequestSuccess(TagList list) {
                 if (list != null) {
-                    recyclerView.setAdapter(new TagAdapter(list.getTags(), onClickListener));
+                    setTagList(list);
+                    setSelectedTab(0);
                 }
             }
         });
     }
+
+    public TagList getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(TagList tagList) {
+        this.tagList = tagList;
+    }
+
+    View.OnClickListener onTagClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setSelectedTab(tabs.indexOf(view));
+        }
+    };
 
     OnItemClickListener onClickListener = new OnItemClickListener() {
         @Override
@@ -68,13 +122,75 @@ public class HomeFragment extends Fragment {
         }
     };
 
+    OnUpdateListener onUpdateListener = new OnUpdateListener() {
+        @Override
+        public void update() {
+            adapter.setItems(getFilteredItems());
+        }
+    };
+
+    private ArrayList<Tag> getFilteredItems() {
+
+        switch (selectedTabIndex) {
+            case 1: {
+                ArrayList <Tag> ownTags = new ArrayList<>();
+                for (Tag tag : getTagList().getTags()) {
+                    User currentUser = DataManager.defaultManager().getCurrentUser();
+                    User author = tag.getAuthor();
+
+                    if (author.getId().equalsIgnoreCase(currentUser.getId())) {
+                        ownTags.add(tag);
+                    }
+                }
+                return ownTags;
+            }
+
+            case 2: {
+                ArrayList <Tag> followingTags = new ArrayList<>();
+                for (Tag tag : getTagList().getTags()) {
+                    User currentUser = DataManager.defaultManager().getCurrentUser();
+                    User author = tag.getAuthor();
+                    if (!author.getId().equalsIgnoreCase(currentUser.getId())) {
+                        followingTags.add(tag);
+                    }
+                }
+                return followingTags;
+            }
+        }
+
+        return getTagList().getTags();
+    }
+
+    private class AnimatedGridLayoutManager extends GridLayoutManager {
+
+        public AnimatedGridLayoutManager(Context context) {
+            super(context, 1);
+        }
+
+        @Override
+        public boolean supportsPredictiveItemAnimations() {
+            return true;
+        }
+    }
+
     private class TagAdapter extends RecyclerView.Adapter <TagAdapter.ViewHolder> implements BubbleTextGetter {
-        private List<Tag> items;
+        private OnUpdateListener onUpdateListener;
         private OnItemClickListener onClickListener;
 
-        public TagAdapter(List<Tag> items, OnItemClickListener onClickListener) {
-            this.items = items;
+        private ArrayList <Tag> items = new ArrayList<>();
+
+        public TagAdapter(OnItemClickListener onClickListener) {
             this.onClickListener = onClickListener;
+        }
+
+        public void setItems(ArrayList<Tag> items) {
+            this.items = items;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return items.get(position).hashCode();
         }
 
         @Override
@@ -89,7 +205,6 @@ public class HomeFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.item = items.get(position);
             holder.update();
-
         }
 
         @Override
@@ -111,6 +226,10 @@ public class HomeFragment extends Fragment {
 
             public Tag item;
             private OnItemClickListener onClickListener;
+
+            public View getRootView() {
+                return rootView;
+            }
 
             public ViewHolder(View v, OnItemClickListener onClickListener) {
                 super(v);
@@ -149,6 +268,9 @@ public class HomeFragment extends Fragment {
 
             }
         }
+    }
+    private interface OnUpdateListener {
+        void update();
     }
 
     private interface OnItemClickListener {
