@@ -7,9 +7,10 @@
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"></include>
 
-    <TextView android:text="@string/hello_world"
+    <RelativeLayout
         android:layout_below="@+id/tool_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></RelativeLayout>
 
 </RelativeLayout>

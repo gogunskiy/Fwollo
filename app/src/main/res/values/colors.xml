@@ -4,7 +4,7 @@
     <color name="app_blue_color">#5A9697</color>
     <color name="app_dark_blue_color">#5A9197</color>
     <color name="app_red_color">#B9440B</color>
-    <color name="app_text_gray_color">#777</color>
+    <color name="app_text_gray_color">#555</color>
     <color name="app_text_dark_gray_color">#333</color>
 
 </resources>

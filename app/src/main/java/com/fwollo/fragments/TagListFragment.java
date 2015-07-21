@@ -1,47 +1,36 @@
-package com.fwollo.activities;
+package com.fwollo.fragments;
 
+import android.app.SearchManager;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fwollo.R;
+import com.fwollo.activities.NavigationDrawerActivity;
 import com.fwollo.logic.datamanager.DataManager;
 import com.fwollo.logic.models.Tag;
 import com.fwollo.logic.models.User;
 import com.fwollo.logic.services.TagService.TagList;
 import com.fwollo.logic.services.TagService.TagService;
-import com.fwollo.widgets.NonSwipeableViewPager;
+import com.fwollo.utils.KeyboardUtils;
+import com.fwollo.utils.NavigationUtils;
 import com.fwollo.widgets.fastScroller.BubbleTextGetter;
-import com.fwollo.widgets.fastScroller.FastScroller;
-import com.melnykov.fab.FloatingActionButton;
-import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.UnderlinePageIndicator;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeFragment extends Fragment {
+import com.fwollo.adapters.AnimatedGridLayoutManager;
+
+public class TagListFragment extends MainActivityFragment {
 
     private RecyclerView recyclerView;
     private ArrayList <TextView> tabs = new ArrayList<>();
@@ -51,13 +40,62 @@ public class HomeFragment extends Fragment {
     private int selectedTabIndex = 0;
     private OnSearchViewChangeListener onSearchQueryListener;
 
-    public HomeFragment() {
+    public TagListFragment() {
 
         super();
 
         initOnSearchListener();
     }
 
+    @Override
+    public void createMenu(Menu menu) {
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                getOnSearchQueryListener().onSearchViewClosed();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getOnSearchQueryListener().onSearchTextChanged(newText);
+                return true;
+            }
+        });
+
+        final SearchView finalSearchView = searchView;
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean queryTextFocused) {
+                if(!queryTextFocused) {
+                    finalSearchView.setIconified(true);
+                    finalSearchView.setQuery("", false);
+                    KeyboardUtils.hideKeyboard(getActivity());
+                    getOnSearchQueryListener().onSearchViewClosed();
+                }
+            }
+        });
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.app_name);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -147,8 +185,25 @@ public class HomeFragment extends Fragment {
 
     OnItemClickListener onClickListener = new OnItemClickListener() {
         @Override
-        public void onItemClick(Tag country) {
-            
+        public void onItemClick(Tag tag) {
+
+        }
+
+        @Override
+        public void onItemActionButtonClick(Tag tag) {
+
+            User currentUser = DataManager.defaultManager().getCurrentUser();
+            User author = tag.getAuthor();
+
+            if (author.getId().equalsIgnoreCase(currentUser.getId())) {
+                OwnTagDetailsFragment fragment = new OwnTagDetailsFragment();
+                fragment.setTag(tag);
+                NavigationUtils.showChildFragment(getActivity(), fragment, R.id.frame_container);
+            } else {
+                FollowingTagDetailsFragment fragment = new FollowingTagDetailsFragment();
+                fragment.setTag(tag);
+                NavigationUtils.showChildFragment(getActivity(), fragment, R.id.frame_container);
+            }
         }
     };
 
@@ -195,20 +250,7 @@ public class HomeFragment extends Fragment {
         return onSearchQueryListener;
     }
 
-    private class AnimatedGridLayoutManager extends GridLayoutManager {
-
-        public AnimatedGridLayoutManager(Context context) {
-            super(context, 1);
-        }
-
-        @Override
-        public boolean supportsPredictiveItemAnimations() {
-            return true;
-        }
-    }
-
     private class TagAdapter extends RecyclerView.Adapter <TagAdapter.ViewHolder> implements BubbleTextGetter {
-        private OnUpdateListener onUpdateListener;
         private OnItemClickListener onClickListener;
 
         private ArrayList <Tag> items = new ArrayList<>();
@@ -265,7 +307,7 @@ public class HomeFragment extends Fragment {
                 return rootView;
             }
 
-            public ViewHolder(View v, OnItemClickListener onClickListener) {
+            public ViewHolder(View v, final OnItemClickListener onClickListener) {
                 super(v);
                 this.rootView = v;
                 v.setOnClickListener(this);
@@ -276,6 +318,12 @@ public class HomeFragment extends Fragment {
                 this.btnMore = (ImageButton) v.findViewById(R.id.btn_more);
 
                 btnMore.setColorFilter(getResources().getColor(R.color.app_blue_color));
+                btnMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClickListener.onItemActionButtonClick(item);
+                    }
+                });
             }
 
             @Override
@@ -309,6 +357,7 @@ public class HomeFragment extends Fragment {
 
     private interface OnItemClickListener {
         void onItemClick(Tag tag);
+        void onItemActionButtonClick(Tag tag);
     }
 
     public interface OnSearchViewChangeListener {

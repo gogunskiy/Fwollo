@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDD"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_weight="1"
+        android:text="Unfollow"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:textColor="@color/app_dark_blue_color"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tv_shared_by"
+        android:adjustViewBounds="true"
+        android:id="@+id/image_user"
+        app:siBorderColor="@color/app_blue_color"
+        app:siBorderWidth="3dp"/>
+
+    <TextView
+        android:id="@+id/tv_shared_by"
+        android:layout_weight="1"
+        android:text="Shared By"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:textColor="@color/app_text_dark_gray_color"
+        android:textSize="28sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:text="Request more"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:id="@+id/tv_following"
+        android:background="@color/app_blue_color"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+</RelativeLayout>

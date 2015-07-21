@@ -1,0 +1,167 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDD"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/tools"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="48dp">
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/add_photo"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Add photos"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@color/app_dark_blue_color"
+                android:textSize="8sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/delete_photo"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Remove photos"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@color/app_dark_blue_color"
+                android:textSize="8sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/delete_tag"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Delete tag"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@color/app_dark_blue_color"
+                android:textSize="8sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/rename_tag"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Rename tag"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@color/app_dark_blue_color"
+                android:textSize="8sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/share_tag"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Share"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@color/app_dark_blue_color"
+                android:textSize="8sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_below="@+id/tools"
+        android:text="Followers:"
+        android:fontFamily="sans-serif"
+        android:gravity="left"
+        android:layout_margin="20dp"
+        android:id="@+id/tv_following"
+        android:textColor="@color/app_text_gray_color"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_below="@+id/tv_following"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

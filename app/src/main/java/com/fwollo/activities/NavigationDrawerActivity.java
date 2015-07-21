@@ -1,92 +1,76 @@
 package com.fwollo.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.fwollo.R;
-import com.fwollo.utils.KeyboardUtils;
+import com.fwollo.fragments.MainActivityFragment;
+import com.fwollo.fragments.TagListFragment;
 
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
-import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
+import java.util.List;
+
 
 /**
  * Created by neokree on 18/01/15.
  */
-public class NavigationDrawerActivity extends MaterialNavigationDrawer {
+public class NavigationDrawerActivity extends BaseActivity {
 
-    private  HomeFragment homeFragment;
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-
-        // set the header image
-        this.setDrawerHeaderImage(R.drawable.header);
-        this.disableLearningPattern();
-        homeFragment = new HomeFragment();
-        this.addSection(newSection("Fwollo", homeFragment));
-
-        this.addBottomSection(newSection("Sign out", new MaterialSectionListener() {
-            @Override
-            public void onClick(MaterialSection materialSection) {
-                startActivity(new Intent(NavigationDrawerActivity.this, LaunchActivity.class));
-                finish();
-            }
-        }));
-
-    }
+    private TagListFragment tagListFragment;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
+        getCurrentFragment().createMenu(menu);
+        return true;
+    }
 
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
+    @Override
+    int layoutId() {
+        return R.layout.activity_main;
+    }
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    @Override
+    void inflateViews() {
+        tagListFragment = new TagListFragment();
 
-        SearchView searchView = null;
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        }
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.frame_container, tagListFragment)
+                .commit();
+    }
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    @Override
+    void viewsWereInflated() {
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                homeFragment.getOnSearchQueryListener().onSearchViewClosed();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                homeFragment.getOnSearchQueryListener().onSearchTextChanged(newText);
-                return true;
-            }
-        });
-
-        final SearchView finalSearchView = searchView;
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean queryTextFocused) {
-                if(!queryTextFocused) {
-                    finalSearchView.setIconified(true);
-                    finalSearchView.setQuery("", false);
-                    KeyboardUtils.hideKeyboard(NavigationDrawerActivity.this);
-                    homeFragment.getOnSearchQueryListener().onSearchViewClosed();
+            public void onBackStackChanged() {
+                updateToolBar();
+                invalidateOptionsMenu();
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 }
             }
         });
+    }
 
-        return super.onCreateOptionsMenu(menu);
+    @Override
+    String title() {
+        return getCurrentFragment().getTitle();
+    }
+
+    private MainActivityFragment getCurrentFragment() {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null && fragments.size() > 0) {
+            Fragment fragment = null;
+            int index = fragments.size() - 1;
+            while (fragment == null || index > 0) {
+                fragment = fragments.get(index);
+                index --;
+            }
+
+            if (fragment != null) {
+                return (MainActivityFragment) fragment;
+            }
+        }
+
+        return new MainActivityFragment();
     }
 }

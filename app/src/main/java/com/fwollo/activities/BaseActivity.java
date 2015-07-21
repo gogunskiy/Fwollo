@@ -31,6 +31,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         toolbar.setTitle(title());
     }
 
+    protected void updateToolBar() {
+        toolbar.setTitle(title());
+    }
+
     abstract int layoutId();
     abstract void inflateViews();
     abstract void viewsWereInflated();

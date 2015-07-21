@@ -30,10 +30,8 @@ dependencies {
     compile 'com.baoyz.actionsheet:library:1.1.0'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.0.+'
-    compile 'com.squareup.okio:okio:1.0.1'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile ('com.octo.android.robospice:robospice:1.4.5') {
