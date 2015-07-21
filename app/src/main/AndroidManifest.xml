@@ -20,7 +20,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.NavigationDrawerActivity" android:theme="@style/ImageHeaderLight" />
+        <activity android:name=".activities.NavigationDrawerActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/ImageHeaderLight">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity android:name=".activities.LoginActivity" android:label="Phone Login"/>
         <activity android:name=".activities.CountryListActivity" android:label="Choose country"/>
         <activity android:name=".activities.ActivateAccountActivity" android:label="Phone Login"/>
